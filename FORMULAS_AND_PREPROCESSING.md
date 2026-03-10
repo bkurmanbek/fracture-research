@@ -98,11 +98,11 @@ feature_scaler = StandardScaler().fit(X_features_reshaped)
 X_features_norm = feature_scaler.transform(X_features_reshaped).reshape(X_features.shape)
 ```
 
-StandardScaler formula for each dimension d:
+StandardScaler formula for each dimension $d$:
 
 $$z_d = \frac{x_d - \mu_d}{\sigma_d}$$
 
-where μ_d and σ_d are the mean and standard deviation computed on the training split for that dimension.
+where $\mu_d$ and $\sigma_d$ are the mean and standard deviation computed on the training split for that dimension.
 
 **Step 3 — Concatenated input tensor**
 
@@ -149,7 +149,7 @@ x_norm /= scale       (if scale > 0, else leave as-is)
 y_norm /= scale
 ```
 
-The `(centroid_x, centroid_y, scale)` values are stored for inverse-transformation.
+The $(centroid\_x, centroid\_y, scale)$ values are stored for inverse-transformation.
 
 **Step 3 — Derived features per segment**
 
@@ -159,7 +159,7 @@ After normalization, for each segment i from point i to point i+1:
 |---|---|---|
 | `delta_r` | $\sqrt{(\Delta x_i)^2 + (\Delta y_i)^2}$ | Segment Euclidean length |
 | `delta_theta` | $\arctan2(\Delta y_i,\ \Delta x_i)$ | Segment angle ∈ (−π, π] |
-| `log_delta_r` | $\ln(\delta r_i + \varepsilon)$ | Log-length; ε = 1e-8 |
+| `log_delta_r` | $\ln(\delta r_i + \varepsilon)$ | Log-length; $\varepsilon = 10^{-8}$ |
 | `sin_theta` | $\sin(\delta\theta_i)$ | Trigonometric projection |
 | `cos_theta` | $\cos(\delta\theta_i)$ | Trigonometric projection |
 | `delta_angle` | $\delta\theta_i - \delta\theta_{i-1}$ (wrapped to (−π, π]) | Turning angle |
@@ -171,7 +171,7 @@ Whole-fracture scalar features (broadcast to every sequence step):
 |---|---|
 | `mean_curvature` | $\overline{\vert\Delta\text{angle}\vert}$ across the fracture |
 | `length_variance` | $\text{Var}(\ell_1, \ldots, \ell_{n-1})$ |
-| `tortuosity` | $\frac{\sum_i \ell_i}{\lVert p_\text{end} - p_\text{start} \rVert}$ |
+| `tortuosity` | $\frac{\sum_i \ell_i}{\lVert p_{\text{end}} - p_{\text{start}} \rVert}$ |
 
 Angle-difference wrapping:
 
@@ -187,7 +187,7 @@ delta_theta_mean, delta_theta_std  = mean/std over all training delta_theta valu
 
 Applied to both splits:
 
-$$\hat{f} = \frac{f - \mu_\text{train}}{\sigma_\text{train} + \varepsilon}$$
+$$\hat{f} = \frac{f - \mu_{\text{train}}}{\sigma_{\text{train}} + \varepsilon}$$
 
 **Step 5 — Exclusion criteria**
 
@@ -231,7 +231,7 @@ Returns turning angle in radians, ∈ [0, π].
 
 $$\tau = \frac{\sum_{i=1}^{n-1} \lVert p_i - p_{i-1} \rVert}{\lVert p_{n-1} - p_0 \rVert}$$
 
-τ = 1 for a perfectly straight fracture; τ > 1 for curved fractures.
+$\tau = 1$ for a perfectly straight fracture; $\tau > 1$ for curved fractures.
 
 ### Segment angle (direction)
 
@@ -241,7 +241,7 @@ $$\theta_i = \arctan2(y_{i+1} - y_i,\ x_{i+1} - x_i), \quad \theta_i \in (-\pi, 
 
 $$\ell_i^{\log} = \ln(\ell_i + \varepsilon), \quad \varepsilon = 10^{-8}$$
 
-Used to reduce skewness in the segment-length distribution.
+Used to reduce skewness in the segment-length distribution (small constant to avoid $\ln(0)$).
 
 ---
 
@@ -274,20 +274,20 @@ $$\mathcal{L} = \mathcal{L}_\text{MSE}$$
 
 **Combined loss (coordinate + stopping)**:
 
-$$\mathcal{L}_\text{total} = \mathcal{L}_\text{coord} + \lambda_\text{stop}\,\mathcal{L}_\text{stop}$$
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{coord}} + \lambda_{\text{stop}}\,\mathcal{L}_{\text{stop}}$$
 
 **Coordinate loss** (MSE):
 
-$$\mathcal{L}_\text{coord} = \frac{1}{N} \sum_{i=1}^{N} \lVert \hat{y}_i^\text{coord} - y_i^\text{coord} \rVert^2$$
+$$\mathcal{L}_{\text{coord}} = \frac{1}{N} \sum_{i=1}^{N} \lVert \hat{y}_i^{\text{coord}} - y_i^{\text{coord}} \rVert^2$$
 
 **Stopping loss** (Binary Cross-Entropy):
 
-$$\mathcal{L}_\text{stop} = -\frac{1}{N} \sum_{i=1}^{N} \left[s_i \log \hat{s}_i + (1 - s_i) \log(1 - \hat{s}_i)\right]$$
+$$\mathcal{L}_{\text{stop}} = -\frac{1}{N} \sum_{i=1}^{N} \left[s_i \log \hat{s}_i + (1 - s_i) \log(1 - \hat{s}_i)\right]$$
 
 where $s_i \in \{0, 1\}$ is the ground-truth stopping label and $\hat{s}_i \in (0, 1)$ is the predicted stopping probability.
 
 **Hyperparameters**:
-- $\lambda_\text{stop} = 1.0$
+- $\lambda_{\text{stop}} = 1.0$
 - Optimizer: **Adam** — lr = 1e-3
 - Early stopping: patience = 20
 
@@ -297,10 +297,10 @@ where $s_i \in \{0, 1\}$ is the ground-truth stopping label and $\hat{s}_i \in (
 
 **MDN negative log-likelihood loss**:
 
-The model outputs a K-component Gaussian mixture over polar coordinates $(\Delta r, \Delta\theta)$:
+The model outputs a $K$-component Gaussian mixture over polar coordinates $(\Delta r, \Delta\theta)$:
 - $\pi_k$ — mixing weights (softmax, $\sum_k \pi_k = 1$)
-- $\mu_r^{(k)},\ \sigma_r^{(k)}$ — Gaussian parameters for step length
-- $\mu_\theta^{(k)},\ \sigma_\theta^{(k)}$ — Gaussian parameters for step angle
+- $\mu_r^{(k)}, \sigma_r^{(k)}$ — Gaussian parameters for step length
+- $\mu_\theta^{(k)}, \sigma_\theta^{(k)}$ — Gaussian parameters for step angle
 
 Gaussian probability density for component k:
 
@@ -318,15 +318,15 @@ $$p(\Delta r, \Delta\theta) = \sum_{k=1}^{K} \pi_k\, p_k(\Delta r, \Delta\theta)
 
 MDN loss (negative log-likelihood, averaged over batch):
 
-$$\mathcal{L}_\text{MDN} = -\frac{1}{N} \sum_{i=1}^{N} \log\!\left(\sum_{k=1}^{K} \pi_k^{(i)}\, p_k(\Delta r_i, \Delta\theta_i)\right)$$
+$$\mathcal{L}_{\text{MDN}} = -\frac{1}{N} \sum_{i=1}^{N} \log\!\left(\sum_{k=1}^{K} \pi_k^{(i)}\, p_k(\Delta r_i, \Delta\theta_i)\right)$$
 
 **Combined loss** (MDN + stopping):
 
-$$\mathcal{L}_\text{total} = \mathcal{L}_\text{MDN} + \lambda_\text{stop}\,\mathcal{L}_\text{BCE-stop}$$
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{MDN}} + \lambda_{\text{stop}}\,\mathcal{L}_{\text{BCE-stop}}$$
 
 **Hyperparameters**:
-- K = 5 mixture components
-- $\lambda_\text{stop} = 1.0$ (code value; paper claims 0.1)
+- $K = 5$ mixture components
+- $\lambda_{\text{stop}} = 1.0$ (code value; paper claims 0.1)
 - Optimizer: **Adam** — lr = 1e-3
 - Early stopping: patience = 15
 
@@ -370,6 +370,8 @@ Implemented via `scipy.spatial.distance.directed_hausdorff`:
 
 $$H(A,B) = \max\!\left(h(A \to B),\; h(B \to A)\right)$$
 
+where $h(X \to Y) = \sup_{x \in X} \inf_{y \in Y} d(x,y)$ is the directed distance.
+
 **Discrete Fréchet Distance** (dynamic programming):
 
 Initialize:
@@ -379,7 +381,7 @@ $$\text{ca}[i, 0] = \max\!\left(\text{ca}[i-1, 0],\; \lVert P_i - Q_0 \rVert\rig
 
 $$\text{ca}[0, j] = \max\!\left(\text{ca}[0, j-1],\; \lVert P_0 - Q_j \rVert\right)$$
 
-Recurrence:
+Recurrence (for $i, j \ge 1$):
 $$\text{ca}[i, j] = \max\!\left(\min\!\left(\text{ca}[i-1,j],\; \text{ca}[i-1,j-1],\; \text{ca}[i,j-1]\right),\; \lVert P_i - Q_j \rVert\right)$$
 
 Result: $d_F(P, Q) = \text{ca}[n-1, m-1]$
@@ -392,20 +394,20 @@ $$\mathbf{d}_i^{(1)} = p_{i+1}^{(1)} - p_i^{(1)}, \quad \mathbf{d}_i^{(2)} = p_{
 Normalized:
 $$\hat{\mathbf{d}}_i^{(1)} = \frac{\mathbf{d}_i^{(1)}}{\lVert \mathbf{d}_i^{(1)} \rVert + \varepsilon}, \quad \hat{\mathbf{d}}_i^{(2)} = \frac{\mathbf{d}_i^{(2)}}{\lVert \mathbf{d}_i^{(2)} \rVert + \varepsilon}$$
 
-Cosine similarity mapped to [0, 1]:
+Cosine similarity mapped to $[0, 1]$:
 $$\text{PathSim} = \frac{1}{L} \sum_{i=1}^{L} \frac{\hat{\mathbf{d}}_i^{(1)} \cdot \hat{\mathbf{d}}_i^{(2)} + 1}{2}, \quad L = \min(n-1, m-1)$$
 
 Range: 0 (opposite directions) → 1 (perfectly aligned).
 
 **Endpoint Error**:
 
-$$E_\text{end} = \lVert \hat{p}_{-1} - p_{-1} \rVert_2$$
+$$E_{\text{end}} = \lVert \hat{p}_{-1} - p_{-1} \rVert_2$$
 
 Euclidean distance between the final predicted point and the final true point.
 
 **Relative Length Error**:
 
-$$E_\text{len} = \frac{\left|\hat{L}_\text{path} - L_\text{path}\right|}{L_\text{path} + \varepsilon}$$
+$$E_{\text{len}} = \frac{\left|\hat{L}_{\text{path}} - L_{\text{path}}\right|}{L_{\text{path}} + \varepsilon}$$
 
 where:
 $$L_\text{path} = \sum_{i=1}^{n-1} \lVert p_{i+1} - p_i \rVert_2, \quad \varepsilon = 10^{-6}$$
@@ -419,17 +421,17 @@ $$L_\text{path} = \sum_{i=1}^{n-1} \lVert p_{i+1} - p_i \rVert_2, \quad \varepsi
 $$W_1(P, Q) = \inf_{\gamma \in \Gamma(P,Q)} \mathbb{E}_{(x,y)\sim\gamma}\left[|x - y|\right]$$
 
 Computed via `scipy.stats.wasserstein_distance` separately for:
-- Segment lengths: $W_1(\{\ell_i^\text{true}\}, \{\ell_i^\text{gen}\})$
-- Segment angles: $W_1(\{\theta_i^\text{true}\}, \{\theta_i^\text{gen}\})$
+- Segment lengths: $W_1(\{\ell_i^{\text{true}}\}, \{\ell_i^{\text{gen}}\})$
+- Segment angles: $W_1(\{\theta_i^{\text{true}}\}, \{\theta_i^{\text{gen}}\})$
 
 **KL Divergence** (histogram approximation with 50 bins):
 
-$$D_\text{KL}(P \| Q) = \sum_{b} P(b)\,\log\frac{P(b)}{Q(b)}$$
+$$D_{\text{KL}}(P \| Q) = \sum_{b} P(b)\,\log\frac{P(b)}{Q(b)}$$
 
-Smoothed to avoid log(0):
+Smoothed to avoid $\log(0)$:
 $$P(b) = \frac{h_P(b) + \varepsilon}{\sum_b (h_P(b) + \varepsilon)}, \quad \varepsilon = 10^{-10}$$
 
-where $h_P(b)$ is the histogram density count for bin b.
+where $h_P(b)$ is the histogram density count for bin $b$.
 
 Computed for length and angle distributions of generated vs. true paths.
 
@@ -457,7 +459,7 @@ $$F_1 = \frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \
 
 $$\bar{E}_L = \frac{1}{M} \sum_{j=1}^{M} \left|\hat{n}_j - n_j\right|$$
 
-where $n_j$ is the true number of steps for fracture j, and $\hat{n}_j$ is the predicted number of steps (determined by when the model first outputs stop = 1).
+where $n_j$ is the true number of steps for fracture $j$, and $\hat{n}_j$ is the predicted number of steps (determined by when the model first outputs $\text{stop} = 1$).
 
 ---
 
@@ -469,21 +471,21 @@ These scores evaluate whether generated paths are statistically consistent with 
 
 $$\text{score}(v, \mu, \sigma) = \exp\!\left(-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2\right)$$
 
-Returns 1.0 at perfect match (v = μ), ≈ 0.607 at 1σ, ≈ 0.135 at 2σ, ≈ 0.011 at 3σ.
+Returns 1.0 at perfect match ($v = \mu$), $\approx 0.607$ at $1\sigma$, $\approx 0.135$ at $2\sigma$, $\approx 0.011$ at $3\sigma$.
 
 ### Segment-length compliance
 
-$$\text{score}_\text{seg} = \text{score}\!\left(\bar{\ell}_\text{gen},\; \mu_\text{train}^\ell,\; \sigma_\text{train}^\ell\right)$$
+$$\text{score}_{\text{seg}} = \text{score}\!\left(\bar{\ell}_{\text{gen}},\; \mu_{\text{train}}^\ell,\; \sigma_{\text{train}}^\ell\right)$$
 
-where $\bar{\ell}_\text{gen}$ is the mean segment length of the generated path.
+where $\bar{\ell}_{\text{gen}}$ is the mean segment length of the generated path.
 
 ### Path-length compliance
 
-$$\text{score}_\text{path} = \text{score}\!\left(L_\text{gen},\; \mu_\text{train}^L,\; \sigma_\text{train}^L\right)$$
+$$\text{score}_{\text{path}} = \text{score}\!\left(L_{\text{gen}},\; \mu_{\text{train}}^L,\; \sigma_{\text{train}}^L\right)$$
 
 ### Coordinate-bounds compliance
 
-$$\text{score}_\text{bounds} = \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}\!\left[x_\min \le \hat{x}_i \le x_\max \text{ and } y_\min \le \hat{y}_i \le y_\max\right]$$
+$$\text{score}_{\text{bounds}} = \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}\!\left[x_{\min} \le \hat{x}_i \le x_{\max} \text{ and } y_{\min} \le \hat{y}_i \le y_{\max}\right]$$
 
 Fraction of generated points within the bounding box of training data.
 
@@ -493,15 +495,15 @@ Consecutive direction vectors $\mathbf{d}_i$ (normalized):
 
 $$\text{dot}_i = \mathbf{d}_i \cdot \mathbf{d}_{i+1}$$
 
-$$\text{is\_oscillating} = \frac{\sum_i \mathbf{1}[\text{dot}_i < -\tau_\text{osc}]}{|\{\text{dot}_i\}|} \ge 0.5$$
+$$\text{is\_oscillating} = \frac{\sum_i \mathbf{1}[\text{dot}_i < -\tau_{\text{osc}}]}{|\{\text{dot}_i\}|} \ge 0.5$$
 
-where $\tau_\text{osc}$ is the oscillation threshold (default 0.5).
+where $\tau_{\text{osc}}$ is the oscillation threshold (default 0.5).
 
 ### Stagnation detection
 
-$$\bar{m} = \frac{1}{W} \sum_{i=1}^{W} \lVert p_i - p_{i-1} \rVert, \quad \text{is\_stagnating} = \bar{m} < \tau_\text{stag}$$
+$$\bar{m} = \frac{1}{W} \sum_{i=1}^{W} \lVert p_i - p_{i-1} \rVert, \quad \text{is\_stagnating} = \bar{m} < \tau_{\text{stag}}$$
 
-where W is the stagnation window size and $\tau_\text{stag}$ is the movement threshold.
+where $W$ is the stagnation window size and $\tau_{\text{stag}}$ is the movement threshold.
 
 ---
 
