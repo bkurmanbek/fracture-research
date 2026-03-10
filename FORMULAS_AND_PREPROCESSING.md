@@ -251,7 +251,7 @@ Used to reduce skewness in the segment-length distribution (small constant to av
 
 **Mean Squared Error (coordinate regression)**:
 
-$$\mathcal{L}_\text{MSE} = \frac{1}{N} \sum_{i=1}^{N} \lVert \hat{y}_i - y_i \rVert^2 = \frac{1}{N} \sum_{i=1}^{N} \left[(\hat{x}_i - x_i)^2 + (\hat{y}_i - y_i)^2\right]$$
+$$\mathcal{L}_{\text{MSE}} = \frac{1}{N} \sum_{i=1}^{N} \lVert \hat{y}_i - y_i \rVert^2 = \frac{1}{N} \sum_{i=1}^{N} \left[(\hat{x}_i - x_i)^2 + (\hat{y}_i - y_i)^2\right]$$
 
 - Optimizer: **AdamW** — lr = 1e-3, weight decay = 0.01
 - Learning rate schedule: ReduceLROnPlateau — factor = 0.5, patience = 5
@@ -263,7 +263,7 @@ $$\mathcal{L}_\text{MSE} = \frac{1}{N} \sum_{i=1}^{N} \lVert \hat{y}_i - y_i \rV
 
 Same MSE loss as Case 1.
 
-$$\mathcal{L} = \mathcal{L}_\text{MSE}$$
+$$\mathcal{L} = \mathcal{L}_{\text{MSE}}$$
 
 - Optimizer: **AdamW** — lr = 3e-4, weight decay = 0.01
 - Early stopping: patience = 20
@@ -381,7 +381,7 @@ $$\text{ca}[i, 0] = \max\!\left(\text{ca}[i-1, 0],\; \lVert P_i - Q_0 \rVert\rig
 
 $$\text{ca}[0, j] = \max\!\left(\text{ca}[0, j-1],\; \lVert P_0 - Q_j \rVert\right)$$
 
-Recurrence (for $i, j \ge 1$):
+Recurrence (for $i, j \geq 1$):
 $$\text{ca}[i, j] = \max\!\left(\min\!\left(\text{ca}[i-1,j],\; \text{ca}[i-1,j-1],\; \text{ca}[i,j-1]\right),\; \lVert P_i - Q_j \rVert\right)$$
 
 Result: $d_F(P, Q) = \text{ca}[n-1, m-1]$
@@ -410,7 +410,7 @@ Euclidean distance between the final predicted point and the final true point.
 $$E_{\text{len}} = \frac{\left|\hat{L}_{\text{path}} - L_{\text{path}}\right|}{L_{\text{path}} + \varepsilon}$$
 
 where:
-$$L_\text{path} = \sum_{i=1}^{n-1} \lVert p_{i+1} - p_i \rVert_2, \quad \varepsilon = 10^{-6}$$
+$$L_{\text{path}} = \sum_{i=1}^{n-1} \lVert p_{i+1} - p_i \rVert_2, \quad \varepsilon = 10^{-6}$$
 
 ---
 
@@ -495,7 +495,7 @@ Consecutive direction vectors $\mathbf{d}_i$ (normalized):
 
 $$\text{dot}_i = \mathbf{d}_i \cdot \mathbf{d}_{i+1}$$
 
-$$\text{is\_oscillating} = \frac{\sum_i \mathbf{1}[\text{dot}_i < -\tau_{\text{osc}}]}{|\{\text{dot}_i\}|} \ge 0.5$$
+$$\text{is\_oscillating} = \frac{\sum_i \mathbf{1}[\text{dot}_i < -\tau_{\text{osc}}]}{|\{\text{dot}_i\}|} \geqq 0.5$$
 
 where $\tau_{\text{osc}}$ is the oscillation threshold (default 0.5).
 
@@ -528,7 +528,7 @@ where $W$ is the stagnation window size and $\tau_{\text{stag}}$ is the movement
 | Early stop patience | 15 | 20 | 20 | 15 |
 | LR reduce patience | 5 | 5 | 5 | 5 |
 | LR reduce factor | 0.5 | 0.5 | 0.5 | 0.5 |
-| λ_stop | — | — | 1.0 | 1.0 |
+| $\lambda_{\text{stop}}$ | — | — | 1.0 | 1.0 |
 | Framework | TensorFlow/Keras | PyTorch | TensorFlow/Keras | PyTorch |
 
 ---
