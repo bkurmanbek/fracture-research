@@ -493,15 +493,22 @@ Fraction of generated points within the bounding box of training data.
 
 Consecutive direction vectors $\mathbf{d}_i$ (normalized):
 
-$$\text{dot}_i = \mathbf{d}_i \cdot \mathbf{d}_{i+1}$$
+$$
+\text{dot}_i = \mathbf{d}i \cdot \mathbf{d}{i+1}
+$$
 
-$$\text{is\_oscillating} = \frac{\sum_i \mathbf{1}[\text{dot}_i < -\tau_{\text{osc}}]}{|\{\text{dot}_i\}|} \geqq 0.5$$
+\frac{\sum_i \mathbf{1}[\text{dot}i < -\tau{\text{osc}}]}
+{|{\text{dot}_i}|}
+\geq 0.5
+$$
 
 where $\tau_{\text{osc}}$ is the oscillation threshold (default 0.5).
 
 ### Stagnation detection
 
-$$\bar{m} = \frac{1}{W} \sum_{i=1}^{W} \lVert p_i - p_{i-1} \rVert, \quad \text{is\_stagnating} = \bar{m} < \tau_{\text{stag}}$$
+\frac{1}{W}\sum_{i=1}^{W}\lVert p_i - p_{i-1}\rVert,
+\quad
+\text{is_stagnating} = \bar{m} < \tau_{\text{stag}}
 
 where $W$ is the stagnation window size and $\tau_{\text{stag}}$ is the movement threshold.
 
