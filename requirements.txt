@@ -1,0 +1,20 @@
+# Core scientific stack
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+seaborn
+
+# Deep learning — Cases 1 & 3 (TensorFlow/Keras)
+tensorflow
+
+# Deep learning — Cases 2 & 4 (PyTorch)
+torch
+torchvision
+
+# PyTorch Geometric — Case 2 (GAT layers)
+torch-geometric
+
+# Jupyter (optional, for interactive use)
+jupyterlab

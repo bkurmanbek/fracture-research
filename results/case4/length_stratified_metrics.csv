@@ -1,0 +1,5 @@
+category,n_fractures,hausdorff_mean,hausdorff_std
+Short (3-5 pts),73,3.198155458108083,1.5208455729393535
+Medium (6-15 pts),37,2.97998905886519,1.1305679687042356
+Long (16-30 pts),1,8.562813331576558,0.0
+Very Long (>30 pts),0,,

@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model weights (too large for GitHub)
+*.h5
+*.keras
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.joblib
+saved_model/
+checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+runs/
+tensorboard_logs/
+wandb/
+
+# factcheck
+factcheck/
+paper/

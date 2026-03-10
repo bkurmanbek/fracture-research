@@ -1,0 +1,2 @@
+hausdorff_mean,hausdorff_std,frechet_mean,frechet_std,endpoint_error_mean,endpoint_error_std,length_error_mean,length_error_std,path_similarity_mean,path_similarity_std,n_fractures
+6.894463524051431,2.846734071692082,7.399851985448156,2.6991317749244286,7.015511022483927,3.142477797597483,3.985951270589764,2.808503205299788,0.8654327604919564,0.11937456388364383,111

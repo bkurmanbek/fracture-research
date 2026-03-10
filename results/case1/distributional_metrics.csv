@@ -1,0 +1,2 @@
+model,wasserstein_length,wasserstein_angle,kl_divergence
+BiLSTM-Attn,2747.2576391348593,0.550383463177583,3.524963512096608

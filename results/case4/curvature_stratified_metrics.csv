@@ -1,0 +1,4 @@
+category,n_fractures,hausdorff_mean,hausdorff_std
+Low (kappa < 0.01),1,1.7331733930964195,0.0
+Medium (0.01 <= kappa < 0.05),64,3.137443202733845,1.0896252636696537
+High (kappa >= 0.05),46,3.2556134474655694,1.9119775133824821
