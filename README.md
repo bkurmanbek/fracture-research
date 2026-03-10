@@ -38,14 +38,7 @@ fracture-network-prediction/
 │   └── case4/   ← evaluation_metrics.csv, path_metrics.csv, distributional_metrics.csv,
 │                   length_stratified_metrics.csv, curvature_stratified_metrics.csv, plots/
 │
-├── factcheck/
-│   ├── FULL_FACTCHECK.md                      ← complete fact-check of all paper claims
-│   ├── metrics_factcheck.md                   ← single-step metrics detail
-│   ├── path_metrics_factcheck.md              ← path-level metrics detail
-│   └── distributional_stopping_factcheck.md   ← distributional + stopping detail
-│
-└── paper/
-    └── fracture_network_prediction.tex        ← LaTeX source
+└── 
 ```
 
 ---
@@ -129,31 +122,6 @@ bash run_all_viz.sh
 
 > **Note on N=111 vs N=139:** Cases 2–4 exclude 28 fractures that have only 2 points,
 > as their feature preprocessors require ≥ 3 points to compute segment angles and curvatures.
-
----
-
-## Known Discrepancies Between Paper and Code
-
-See `factcheck/FULL_FACTCHECK.md` for the complete audit. Key issues:
-
-- **Max epochs:** Paper states 100 for all models; code trains for **50 epochs**
-- **BiLSTM attention heads:** Paper says 4; code uses **8**
-- **CNN-GRU-MDN K (MDN mixtures):** Paper says 3; code uses **5**
-- **CNN-GRU-MDN GRU hidden dim:** Paper says 128; code uses **256**
-- **Stopping label definition:** Paper says "penultimate point"; code labels **last point**
-- **Dilation rates (Case 4):** Paper says (1,2,4); code uses **(1,2,4,8)**
-- **All numeric results:** No paper table values are reproduced exactly; normalization schemes differ between models and from what the paper implies
-- **Baselines (Linear Extrapolation, Random Walk):** Not implemented in this repository
-
----
-
-## Environment
-
-Tested on:
-- Python 3.11
-- TensorFlow 2.21 (Cases 1, 3)
-- PyTorch 2.4.1 + CUDA 12.4 (Cases 2, 4)
-- GPU: NVIDIA GeForce RTX 4090 (optional; all models run on CPU too)
 
 ---
 
