@@ -97,7 +97,7 @@ bash run_all_viz.sh
 
 ---
 
-## Results Summary (Reproduced — Full Test Set)
+## Results Summary (Full Test Set)
 
 ### Single-Step Prediction (normalized coordinate units)
 
@@ -122,16 +122,3 @@ bash run_all_viz.sh
 
 > **Note on N=111 vs N=139:** Cases 2–4 exclude 28 fractures that have only 2 points,
 > as their feature preprocessors require ≥ 3 points to compute segment angles and curvatures.
-
----
-
-## Citation
-
-```bibtex
-@article{kurmanbek2025fracture,
-  title={Deep Learning Approaches for Autoregressive Fracture Network Path Prediction},
-  author={Kurmanbek, Bakytzhank},
-  journal={...},
-  year={2025}
-}
-```
