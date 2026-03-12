@@ -28,7 +28,7 @@ Preprocessed test set. Contains **139 fractures** and **625 points**. Geographic
 | `next_angle` | Bearing of the outgoing segment (radians) |
 | `prev_length` | Length of the incoming segment (feet) |
 | `next_length` | Length of the outgoing segment (feet) |
-| `curvature` | Local curvature κ = |Δangle| / segment_length |
+| `curvature` | Local curvature κ  |
 | `closest_seg_{0-3}_p{1,2}_{x,y}` | XY endpoints of the 4 nearest neighbour fracture segments (8 columns × 4 neighbours = 16 columns) |
 
 Total columns: 25
