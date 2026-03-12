@@ -19,7 +19,6 @@
 6. [Compliance & Quality Scores](#6-compliance--quality-scores)
 7. [Model Architecture Parameters](#7-model-architecture-parameters)
 8. [Key Dataset Statistics](#8-key-dataset-statistics)
-9. [Known Paper vs. Code Discrepancies](#9-known-paper-vs-code-discrepancies)
 
 ---
 
@@ -564,23 +563,3 @@ $$L_j = \sum_{i=1}^{n_j - 1} \ell_i$$
 Stored: `mean`, `std`, `min`, `max`
 
 All of the above statistics are used exclusively from the **training set** to parameterize the compliance scorers. They are never recomputed on the test set.
-
----
-
-## 9. Known Paper vs. Code Discrepancies
-
-The following differences were identified between the published paper descriptions and the actual code implementation:
-
-| Parameter / Claim | Paper | Code (actual) |
-|---|---|---|
-| Max training epochs | 100 | **50** |
-| BiLSTM attention heads | 4 | **8** |
-| CNN-GRU-MDN: K (mixtures) | 3 | **5** |
-| CNN-GRU-MDN: GRU hidden units | 128 | **256** |
-| CNN-GRU-MDN: λ_stop | 0.1 | **1.0** |
-| CNN-GRU-MDN: dilation rates | (1, 2, 4) | **(1, 2, 4, 8)** |
-| Stopping label definition | Penultimate point | **Last point** |
-| Linear Extrapolation baseline | Described | **Not implemented** |
-| Random Walk baseline | Described | **Not implemented** |
-
-All formulas, parameters, and statistics in this document are based on the **code as implemented**, not the paper text.
